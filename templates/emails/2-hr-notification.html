@@ -1,0 +1,31 @@
+<div style="font-family:Arial,sans-serif;max-width:640px;margin:auto;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
+  <div style="background:#111827;color:#fff;padding:16px 24px">
+    <h2 style="margin:0">New Admission Application</h2>
+    <div style="font-size:13px;opacity:.8">{{ $('Validate').first().json.application_id }}</div>
+  </div>
+  <div style="padding:24px;color:#111827">
+    <table style="width:100%;border-collapse:collapse;font-size:14px">
+      <tr><td style="padding:8px;background:#f3f4f6;width:35%"><b>Name</b></td><td style="padding:8px">{{ $('Validate').first().json.name }}</td></tr>
+      <tr><td style="padding:8px;background:#f3f4f6"><b>CNIC / B-Form</b></td><td style="padding:8px">{{ $('Validate').first().json.cnic_bform }}</td></tr>
+      <tr><td style="padding:8px;background:#f3f4f6"><b>Email</b></td><td style="padding:8px">{{ $('Validate').first().json.email }}</td></tr>
+      <tr><td style="padding:8px;background:#f3f4f6"><b>City</b></td><td style="padding:8px">{{ $('Validate').first().json.city }}</td></tr>
+      <tr><td style="padding:8px;background:#f3f4f6"><b>Intermediate Board</b></td><td style="padding:8px">{{ $('Validate').first().json.intermediate_board }}</td></tr>
+      <tr><td style="padding:8px;background:#f3f4f6"><b>Admission Track</b></td><td style="padding:8px">{{ $('Validate').first().json.admission_track }}</td></tr>
+      <tr><td style="padding:8px;background:#f3f4f6"><b>Target University</b></td><td style="padding:8px">{{ $('Validate').first().json.target_university }}</td></tr>
+      <tr><td style="padding:8px;background:#f3f4f6"><b>Batch</b></td><td style="padding:8px">{{ $('Validate').first().json.batch_number }}</td></tr>
+    </table>
+
+    <h3 style="margin:24px 0 8px">Payment screenshot</h3>
+    <a href="{{ $('Validate').first().json.payment_screenshot }}">
+      <img src="{{ $('Validate').first().json.payment_screenshot }}" alt="Payment screenshot" style="max-width:100%;border:1px solid #d1d5db;border-radius:6px">
+    </a>
+    <p style="font-size:12px;color:#6b7280">Image not showing? <a href="{{ $('Save application').first().json.drive_url }}">Open in Drive</a></p>
+
+    <div style="text-align:center;margin:28px 0 8px">
+      <a href="{{ $json.approve_url }}" style="background:#16a34a;color:#fff;padding:14px 32px;text-decoration:none;border-radius:6px;font-weight:bold;display:inline-block">✅ ACCEPT</a>
+      &nbsp;&nbsp;
+      <a href="{{ $json.reject_url }}" style="background:#dc2626;color:#fff;padding:14px 32px;text-decoration:none;border-radius:6px;font-weight:bold;display:inline-block">❌ REJECT</a>
+    </div>
+    <p style="text-align:center;font-size:12px;color:#6b7280">Each link works once. Rejecting opens a short form for the reason.</p>
+  </div>
+</div>

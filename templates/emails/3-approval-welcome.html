@@ -1,0 +1,35 @@
+<div style="font-family:Arial,sans-serif;max-width:620px;margin:auto;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
+  <div style="background:#16a34a;color:#fff;padding:22px;text-align:center">
+    <h2 style="margin:0">Congratulations! 🎉</h2>
+    <div>Your admission has been approved</div>
+  </div>
+  <div style="padding:24px;color:#111827;line-height:1.6">
+    <p>Dear {{ $('Generate credentials').first().json.name }},</p>
+    <p>We are happy to welcome you to <b>{{ $('Generate credentials').first().json.admission_track }}</b>
+       ({{ $('Generate credentials').first().json.target_university }}, Batch {{ $('Generate credentials').first().json.batch_number }}).</p>
+
+    <h3 style="margin-bottom:6px">Your portal login</h3>
+    <table style="width:100%;border-collapse:collapse;background:#f9fafb;border:1px solid #e5e7eb">
+      <tr><td style="padding:10px"><b>Portal</b></td><td style="padding:10px"><a href="https://portal.clientdomain.com">https://portal.clientdomain.com</a></td></tr>
+      <tr><td style="padding:10px"><b>Username</b></td><td style="padding:10px">{{ $('Generate credentials').first().json.portal_username }}</td></tr>
+      <tr><td style="padding:10px"><b>Temporary password</b></td><td style="padding:10px"><code style="font-size:15px">{{ $('Generate credentials').first().json.temp_password }}</code></td></tr>
+    </table>
+    <p style="font-size:13px;color:#b45309">⚠️ Please change your password after your first login and don't share it with anyone.</p>
+
+    <div style="text-align:center;margin:24px 0">
+      <a href="{{ $('Generate credentials').first().json.whatsapp_link }}" style="background:#25d366;color:#fff;padding:14px 28px;text-decoration:none;border-radius:6px;font-weight:bold;display:inline-block">💬 Join your WhatsApp Group</a>
+    </div>
+
+    <h3 style="margin-bottom:6px">Getting started</h3>
+    <ol style="padding-left:20px">
+      <li><b>Join the WhatsApp group</b> using the button above. All announcements and class links are shared there.</li>
+      <li><b>Log in to the portal</b> with the details above and change your password.</li>
+      <li><b>Complete your profile</b> and check that your name, track and batch are correct.</li>
+      <li><b>Check your schedule</b> in the portal for class timings and upcoming sessions.</li>
+      <li><b>Need help?</b> Message us on WhatsApp at +92-XXX-XXXXXXX or email support@clientdomain.com.</li>
+    </ol>
+
+    <p>We look forward to seeing you in class.</p>
+    <p>Regards,<br><b>Admissions Team</b><br>Your Institute</p>
+  </div>
+</div>

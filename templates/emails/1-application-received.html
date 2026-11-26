@@ -1,0 +1,18 @@
+<div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
+  <div style="background:#1d4ed8;color:#fff;padding:20px;text-align:center">
+    <h2 style="margin:0">Application Received</h2>
+  </div>
+  <div style="padding:24px;color:#111827;line-height:1.6">
+    <p>Dear {{ $('Validate').first().json.name }},</p>
+    <p>Thank you for applying. We have received your admission form and payment screenshot.</p>
+    <table style="width:100%;border-collapse:collapse;margin:16px 0">
+      <tr><td style="padding:8px;background:#f3f4f6"><b>Reference No.</b></td><td style="padding:8px">{{ $('Validate').first().json.application_id }}</td></tr>
+      <tr><td style="padding:8px;background:#f3f4f6"><b>Track</b></td><td style="padding:8px">{{ $('Validate').first().json.admission_track }}</td></tr>
+      <tr><td style="padding:8px;background:#f3f4f6"><b>University</b></td><td style="padding:8px">{{ $('Validate').first().json.target_university }}</td></tr>
+      <tr><td style="padding:8px;background:#f3f4f6"><b>Batch</b></td><td style="padding:8px">{{ $('Validate').first().json.batch_number }}</td></tr>
+    </table>
+    <p>Our team is verifying your payment and details. We will confirm your admission shortly, usually within 24 to 48 hours.</p>
+    <p>Please keep your reference number handy and <b>do not submit the form again</b>.</p>
+    <p>Regards,<br><b>Admissions Team</b><br>Your Institute</p>
+  </div>
+</div>

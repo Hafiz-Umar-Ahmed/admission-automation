@@ -1,0 +1,637 @@
+{
+  "name": "3 - Admission Rejected",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Reject application",
+        "formFields": {
+          "values": [
+            {
+              "fieldType": "hiddenField",
+              "fieldName": "id"
+            },
+            {
+              "fieldType": "hiddenField",
+              "fieldName": "token"
+            },
+            {
+              "fieldLabel": "Reason",
+              "requiredField": true
+            }
+          ]
+        },
+        "responseMode": "lastNode",
+        "options": {
+          "appendAttribution": false,
+          "path": "admission-reject"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        0,
+        96
+      ],
+      "id": "6913d6c0-5e7b-4377-8f8b-b2fa9842cadb",
+      "name": "Reject Form",
+      "webhookId": "c899b3bc-0840-4435-b536-ab192d790735"
+    },
+    {
+      "parameters": {
+        "action": "hmac",
+        "value": "={{ $json.id }}",
+        "dataPropertyName": "expected"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 2,
+      "position": [
+        224,
+        96
+      ],
+      "id": "65fd6032-755f-4de3-8bcb-b1c9f5d89977",
+      "name": "Recompute token",
+      "credentials": {
+        "crypto": {
+          "id": "E6YbqoDGhjcFueeP",
+          "name": "Crypto account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "055bbb37-1bdb-42d2-8576-02d89fd7907d",
+              "leftValue": "={{ $('Reject Form').first().json.token }}",
+              "rightValue": "={{ $json.expected }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        96
+      ],
+      "id": "1ca86183-0ceb-4392-92f0-79f27c2bbe89",
+      "name": "Token valid?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "164f1e5f-0d69-4b68-b7bb-331a0c2d38c6",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "pending",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        896,
+        0
+      ],
+      "id": "3a4933ed-7a85-4eae-b912-ed9372fc0106",
+      "name": "Still pending?"
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "completionTitle": "Invalid or tampered link",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.5,
+      "position": [
+        672,
+        192
+      ],
+      "id": "b9d25b76-4cc5-4333-a4e6-5a49b48a91a9",
+      "name": "Invalid link",
+      "webhookId": "85d812a8-5a06-4562-9b8c-64bfa327f1a3"
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "completionTitle": "This application was already processed",
+        "options": {
+          "formTitle": ""
+        }
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.5,
+      "position": [
+        1120,
+        96
+      ],
+      "id": "7a34a664-84f6-41cf-891c-bcdce448dbf2",
+      "name": "Already processed ",
+      "webhookId": "391f6b1f-9910-4ff9-b9c3-ab4d02b14b3c"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "15rMKDNL27jp0nZdriP7Htc9IiRHQJ4n5tow9qYR34YM",
+          "mode": "list",
+          "cachedResultName": "Physikomatic - Database",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15rMKDNL27jp0nZdriP7Htc9IiRHQJ4n5tow9qYR34YM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Applications",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15rMKDNL27jp0nZdriP7Htc9IiRHQJ4n5tow9qYR34YM/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "application_id",
+              "lookupValue": "={{ $('Reject Form').first().json.id}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        0
+      ],
+      "id": "68d7969d-bdf7-4475-be25-c6c8bd01fcf0",
+      "name": "Get application",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "oTgk27njl8RMsLII",
+          "name": "GoogleAuth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "15rMKDNL27jp0nZdriP7Htc9IiRHQJ4n5tow9qYR34YM",
+          "mode": "list",
+          "cachedResultName": "Physikomatic - Database",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15rMKDNL27jp0nZdriP7Htc9IiRHQJ4n5tow9qYR34YM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Applications",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15rMKDNL27jp0nZdriP7Htc9IiRHQJ4n5tow9qYR34YM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "application_id": "={{ $('Get application').first().json.application_id }}",
+            "status": "rejected",
+            "decision_at": "={{$now.toFormat('yyyy-MM-dd HH:mm:ss')}}",
+            "rejection_reason": "={{ $('Reject Form').first().json.Reason }}"
+          },
+          "matchingColumns": [
+            "application_id"
+          ],
+          "schema": [
+            {
+              "id": "application_id",
+              "displayName": "application_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "submitted_at",
+              "displayName": "submitted_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "name ",
+              "displayName": "name ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cnic_bform",
+              "displayName": "cnic_bform",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "city",
+              "displayName": "city",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "intermediate_board",
+              "displayName": "intermediate_board",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "admission_track",
+              "displayName": "admission_track",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "target_university",
+              "displayName": "target_university",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "batch_number",
+              "displayName": "batch_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "payment_screenshot",
+              "displayName": "payment_screenshot",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "drive_url",
+              "displayName": "drive_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email_send",
+              "displayName": "email_send",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "confirmation_send",
+              "displayName": "confirmation_send",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "decision_at",
+              "displayName": "decision_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "rejection_reason",
+              "displayName": "rejection_reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "portal_username",
+              "displayName": "portal_username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "synced_to_software",
+              "displayName": "synced_to_software",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1120,
+        -96
+      ],
+      "id": "28dadaf7-f585-473f-9148-50f38557b93b",
+      "name": "Mark rejected",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "oTgk27njl8RMsLII",
+          "name": "GoogleAuth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "518e60c7-28d8-4d68-b69d-c132ec6eddd6",
+              "name": "name",
+              "value": "={{ $('Get application').first().json['name '] }}",
+              "type": "string"
+            },
+            {
+              "id": "a6e31f13-359c-482f-b047-4e0b5c079875",
+              "name": "email",
+              "value": "={{ $('Get application').first().json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "84717328-7be2-48d3-8a7d-b23ff14ac0d8",
+              "name": "application_id",
+              "value": "={{ $('Get application').first().json.application_id }}",
+              "type": "string"
+            },
+            {
+              "id": "f3cccea9-0a16-4573-aa1c-b74ca9defd7e",
+              "name": "reason",
+              "value": "={{ $('Reject Form').first().json.Reason }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1344,
+        -96
+      ],
+      "id": "84bb174b-8e3b-4406-86f8-90e34c141390",
+      "name": "Prepare email"
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "completionTitle": "Done",
+        "completionMessage": "Application rejected. The student has been notified",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.5,
+      "position": [
+        1776,
+        -96
+      ],
+      "id": "3266aceb-19a4-4ee8-ae63-56399ec4a162",
+      "name": "Form",
+      "webhookId": "aa4efca1-4341-43e2-abec-c1156c3da476"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "=Update on your application (Ref: {{ $json.application_id }})",
+        "message": "=<div style=\"font-family:Arial,sans-serif;max-width:600px;margin:auto;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden\">   <div style=\"background:#374151;color:#fff;padding:20px;text-align:center\">     <h2 style=\"margin:0\">Application Update</h2>   </div>   <div style=\"padding:24px;color:#111827;line-height:1.6\">     <p>Dear {{ $json.name }},</p>     <p>Thank you for your application (Ref: <b>{{ $json.application_id }}</b>).</p>     <p>We were not able to confirm your application at this time for the following reason:</p>     <div style=\"background:#fef2f2;border-left:4px solid #dc2626;padding:12px 16px;margin:16px 0\">       {{ $json.reason }}     </div>     <p><b>Please stay calm. This is not the end of the process.</b> Our team will contact you personally on WhatsApp or email very soon to help you sort this out.</p>     <p>There is no need to submit the form again. Doing so may delay your case.</p>     <p>Regards,<br><b>Admissions Team</b><br>Pysikometics<br>+92-XXX-XXXXXXX</p>   </div> </div>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1552,
+        -96
+      ],
+      "id": "8611cd86-0840-432f-bfb2-eaa329df4ca1",
+      "name": "Send a message",
+      "webhookId": "0635eb68-f5b4-4491-8db9-9fbccd13f8bb",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "h21h8uQ633PpUAjz",
+          "name": "GmailAuth_H.umarahmad107@gmail.com"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Reject Form": {
+      "main": [
+        [
+          {
+            "node": "Recompute token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recompute token": {
+      "main": [
+        [
+          {
+            "node": "Token valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Token valid?": {
+      "main": [
+        [
+          {
+            "node": "Get application",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Invalid link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Still pending?": {
+      "main": [
+        [
+          {
+            "node": "Mark rejected",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Already processed ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get application": {
+      "main": [
+        [
+          {
+            "node": "Still pending?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark rejected": {
+      "main": [
+        [
+          {
+            "node": "Prepare email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare email": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "a9a57c8d-8197-4d06-b6f8-8d487200412f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d6b3da432242f990bbbcf1b7eb9a3c50829651382e2ecc2ff3dd689363f8e696"
+  },
+  "id": "j3ndc85vgDtoKTaU",
+  "tags": []
+}

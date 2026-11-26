@@ -1,0 +1,16 @@
+<div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
+  <div style="background:#374151;color:#fff;padding:20px;text-align:center">
+    <h2 style="margin:0">Application Update</h2>
+  </div>
+  <div style="padding:24px;color:#111827;line-height:1.6">
+    <p>Dear {{ $json.name }},</p>
+    <p>Thank you for your application (Ref: <b>{{ $json.application_id }}</b>).</p>
+    <p>We were not able to confirm your application at this time for the following reason:</p>
+    <div style="background:#fef2f2;border-left:4px solid #dc2626;padding:12px 16px;margin:16px 0">
+      {{ $json.reason }}
+    </div>
+    <p><b>Please stay calm. This is not the end of the process.</b> Our team will contact you personally on WhatsApp or email very soon to help you sort this out.</p>
+    <p>There is no need to submit the form again. Doing so may delay your case.</p>
+    <p>Regards,<br><b>Admissions Team</b><br>Your Institute<br>+92-XXX-XXXXXXX</p>
+  </div>
+</div>
