@@ -5,6 +5,14 @@ An end-to-end admission workflow built on **n8n**, **Tally Forms**, **Google She
 Students apply through a form. HR receives an email with every detail and the payment screenshot, and
 accepts or rejects with one click. Everything else is automated: record keeping, sync to the existing
 student software, portal credentials, the WhatsApp group invite and all notifications.
+> **Demo video:** <div>
+    <a href="https://www.loom.com/share/3de7c922bb4d4a9d9c97d654df1cbdd9">
+      <p>Automating Client Intake, Approval, Rejection Workflows - Watch Video</p>
+    </a>
+    <a href="https://www.loom.com/share/3de7c922bb4d4a9d9c97d654df1cbdd9">
+      <img style="max-width:300px;" src="https://www.loom.com/v1/videos/3de7c922bb4d4a9d9c97d654df1cbdd9/thumbnail.gif">
+    </a>
+  </div>
 
 ## Features
 
